@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import ch.erni.iof.configurator.model.AcquariumConfigurations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Component
 public class AcquariumsConfigurationsRepository {
 
   private final static String CONFIGURATION_FILE = "iof_configuration.json";

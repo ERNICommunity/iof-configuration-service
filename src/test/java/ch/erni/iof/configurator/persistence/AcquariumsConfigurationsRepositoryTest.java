@@ -38,6 +38,5 @@ public class AcquariumsConfigurationsRepositoryTest {
 
     ObjectMapper mapper = new ObjectMapper();
     mapper.writeValue(new File("test.json"), configurations);
-    // fail("not yet implemented");
   }
 }
