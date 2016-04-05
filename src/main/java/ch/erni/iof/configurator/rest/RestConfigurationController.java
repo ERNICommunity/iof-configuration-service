@@ -1,10 +1,13 @@
 package ch.erni.iof.configurator.rest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ch.erni.iof.configurator.model.AcquariumConfigurations;
@@ -32,14 +35,24 @@ public class RestConfigurationController {
     return service.getAcquariumConfiguration(aquariumId);
   }
 
+  @RequestMapping(value = "/configurations/{aquarium_id}", method = RequestMethod.POST)
+  public void updateSingleConfiguration(@PathVariable("aquarium_id") String aquariumId) {
+    // TODO
+  }
+
+  @RequestMapping(value = "/configurations/{aquarium_id}", method = RequestMethod.DELETE)
+  public void deleteSingleConfiguration(@PathVariable("aquarium_id") String aquariumId) {
+    // TODO
+  }
+
   @RequestMapping("/configurations")
-  public AcquariumConfigurations getAllConfigurations() {
+  public List<SingleAcquariumConfiguration> getAllConfigurations() {
     Optional<AcquariumConfigurations> configs = service.getAllConfigurations();
     if (configs.isPresent()) {
-      return configs.get();
+      return configs.get().getConfigurations();
     }
     else {
-      return new AcquariumConfigurations();
+      return new ArrayList<SingleAcquariumConfiguration>();
     }
   }
 }

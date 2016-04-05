@@ -1,20 +1,20 @@
 package ch.erni.iof.configurator.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class AcquariumConfigurations {
 
-  private Map<String, Map<String, String>> configurations = new HashMap<String, Map<String, String>>();
+  private List<SingleAcquariumConfiguration> configurations = new ArrayList<>();
 
-  public Map<String, Map<String, String>> getConfigurations() {
+  public List<SingleAcquariumConfiguration> getConfigurations() {
     return configurations;
   }
 
-  public void setConfigurations(Map<String, Map<String, String>> configurations) {
+  public void setConfigurations(List<SingleAcquariumConfiguration> configurations) {
     this.configurations = configurations;
   }
 

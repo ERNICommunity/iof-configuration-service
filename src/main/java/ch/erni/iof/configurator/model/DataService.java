@@ -20,15 +20,23 @@ public class DataService {
 
   public void addConfiguration(SingleAcquariumConfiguration singleConfig) {
     Optional<AcquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
-    configurations.get().getConfigurations().put(singleConfig.getAcquariumId(), singleConfig.getFishMappings());
+    configurations.get().getConfigurations().add(singleConfig);
     repository.saveAcquariumConfigurations(configurations);
   }
 
   public SingleAcquariumConfiguration getAcquariumConfiguration(String acquariumId) {
-    Optional<AcquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
     SingleAcquariumConfiguration singleConfig = new SingleAcquariumConfiguration();
-    singleConfig.setFishMappings(configurations.get().getConfigurations().get(acquariumId));
     singleConfig.setAcquariumId(acquariumId);
+    Optional<AcquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
+    if (!configurations.isPresent()) {
+      return singleConfig;
+    }
+
+    for (SingleAcquariumConfiguration single : configurations.get().getConfigurations()) {
+      if (single.getAcquariumId().equals(acquariumId)) {
+        return single;
+      }
+    }
     return singleConfig;
   }
 

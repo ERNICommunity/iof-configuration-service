@@ -1,1 +1,1 @@
-{"1234":{"1":"berne","2":"zuerich"},"4321":{"1":"berne","2":"zuerich"}}
+[{"aquarium-id":"1234","fish-mapping":[{"fish-id":"1","office-name":"berne"},{"fish-id":"2","office-name":"zuerich"}]},{"aquarium-id":"4321","fish-mapping":[{"fish-id":"1","office-name":"berne"},{"fish-id":"2","office-name":"zuerich"}]}]

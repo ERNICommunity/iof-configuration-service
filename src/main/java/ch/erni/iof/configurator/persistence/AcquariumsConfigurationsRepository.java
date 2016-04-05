@@ -2,14 +2,17 @@ package ch.erni.iof.configurator.persistence;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ch.erni.iof.configurator.model.AcquariumConfigurations;
+import ch.erni.iof.configurator.model.SingleAcquariumConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 @Component
 public class AcquariumsConfigurationsRepository {
@@ -22,7 +25,7 @@ public class AcquariumsConfigurationsRepository {
   public void saveAcquariumConfigurations(Optional<AcquariumConfigurations> configurations) {
     try {
       if (configurations.isPresent()) {
-        mapper.writeValue(new File(CONFIGURATION_FILE), configurations.get());
+        mapper.writeValue(new File(CONFIGURATION_FILE), configurations.get().getConfigurations());
       }
     }
     catch (IOException e) {
@@ -33,7 +36,11 @@ public class AcquariumsConfigurationsRepository {
   public Optional<AcquariumConfigurations> loadAcquariumConfigurations() {
     Optional<AcquariumConfigurations> configurations = Optional.empty();
     try {
-      configurations = Optional.of(mapper.readValue(new File(CONFIGURATION_FILE), AcquariumConfigurations.class));
+      List<SingleAcquariumConfiguration> aquariumList = mapper.readValue(new File(CONFIGURATION_FILE), TypeFactory
+          .defaultInstance().constructCollectionType(List.class, SingleAcquariumConfiguration.class));
+      AcquariumConfigurations configs = new AcquariumConfigurations();
+      configs.setConfigurations(aquariumList);
+      configurations = Optional.of(configs);
     }
     catch (IOException e) {
       e.printStackTrace();
