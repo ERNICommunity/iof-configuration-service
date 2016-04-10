@@ -13,26 +13,26 @@ public class DataService {
   @Autowired
   private AcquariumsConfigurationsRepository repository;
 
-  public Optional<AcquariumConfigurations> getAllConfigurations() {
-    Optional<AcquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
+  public Optional<AquariumConfigurations> getAllConfigurations() {
+    Optional<AquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
     return configurations;
   }
 
-  public void addConfiguration(SingleAcquariumConfiguration singleConfig) {
-    Optional<AcquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
+  public void addConfiguration(SingleAquariumConfiguration singleConfig) {
+    Optional<AquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
     configurations.get().getConfigurations().add(singleConfig);
     repository.saveAcquariumConfigurations(configurations);
   }
 
-  public SingleAcquariumConfiguration getAcquariumConfiguration(String acquariumId) {
-    SingleAcquariumConfiguration singleConfig = new SingleAcquariumConfiguration();
+  public SingleAquariumConfiguration getAcquariumConfiguration(String acquariumId) {
+    SingleAquariumConfiguration singleConfig = new SingleAquariumConfiguration();
     singleConfig.setAcquariumId(acquariumId);
-    Optional<AcquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
+    Optional<AquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
     if (!configurations.isPresent()) {
       return singleConfig;
     }
 
-    for (SingleAcquariumConfiguration single : configurations.get().getConfigurations()) {
+    for (SingleAquariumConfiguration single : configurations.get().getConfigurations()) {
       if (single.getAcquariumId().equals(acquariumId)) {
         return single;
       }
@@ -40,4 +40,30 @@ public class DataService {
     return singleConfig;
   }
 
+  public boolean updateSingleConfiguration(final SingleAquariumConfiguration configuration) {
+    System.out.println("Message received");
+    Optional<AquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
+    Optional<SingleAquariumConfiguration> configOptional = findConfiguration(configurations,
+        configuration.getAcquariumId());
+    if (!configOptional.isPresent()) {
+      return false;
+    }
+    configOptional.get().setFishMappings(configuration.getFishMappings());
+    configOptional.get().setOffice(configuration.getOffice());
+    repository.saveAcquariumConfigurations(configurations);
+    return true;
+  }
+
+  private Optional<SingleAquariumConfiguration> findConfiguration(
+      final Optional<AquariumConfigurations> configurations, final String aquariumId) {
+    if (!configurations.isPresent()) {
+      return Optional.empty();
+    }
+    for (SingleAquariumConfiguration single : configurations.get().getConfigurations()) {
+      if (single.getAcquariumId().equals(aquariumId)) {
+        return Optional.of(single);
+      }
+    }
+    return Optional.empty();
+  }
 }

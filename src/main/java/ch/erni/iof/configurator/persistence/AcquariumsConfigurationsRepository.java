@@ -8,8 +8,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ch.erni.iof.configurator.model.AcquariumConfigurations;
-import ch.erni.iof.configurator.model.SingleAcquariumConfiguration;
+import ch.erni.iof.configurator.model.AquariumConfigurations;
+import ch.erni.iof.configurator.model.SingleAquariumConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -22,7 +22,7 @@ public class AcquariumsConfigurationsRepository {
   @Autowired
   ObjectMapper mapper;
 
-  public void saveAcquariumConfigurations(Optional<AcquariumConfigurations> configurations) {
+  public void saveAcquariumConfigurations(Optional<AquariumConfigurations> configurations) {
     try {
       if (configurations.isPresent()) {
         mapper.writeValue(new File(CONFIGURATION_FILE), configurations.get().getConfigurations());
@@ -33,12 +33,12 @@ public class AcquariumsConfigurationsRepository {
     }
   }
 
-  public Optional<AcquariumConfigurations> loadAcquariumConfigurations() {
-    Optional<AcquariumConfigurations> configurations = Optional.empty();
+  public Optional<AquariumConfigurations> loadAcquariumConfigurations() {
+    Optional<AquariumConfigurations> configurations = Optional.empty();
     try {
-      List<SingleAcquariumConfiguration> aquariumList = mapper.readValue(new File(CONFIGURATION_FILE), TypeFactory
-          .defaultInstance().constructCollectionType(List.class, SingleAcquariumConfiguration.class));
-      AcquariumConfigurations configs = new AcquariumConfigurations();
+      List<SingleAquariumConfiguration> aquariumList = mapper.readValue(new File(CONFIGURATION_FILE), TypeFactory
+          .defaultInstance().constructCollectionType(List.class, SingleAquariumConfiguration.class));
+      AquariumConfigurations configs = new AquariumConfigurations();
       configs.setConfigurations(aquariumList);
       configurations = Optional.of(configs);
     }

@@ -9,9 +9,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.erni.iof.configurator.model.AcquariumConfigurations;
-import ch.erni.iof.configurator.model.SingleAcquariumConfiguration;
-import ch.erni.iof.configurator.model.SingleAcquariumConfiguration.FishMapping;
+import ch.erni.iof.configurator.model.AquariumConfigurations;
+import ch.erni.iof.configurator.model.SingleAquariumConfiguration;
+import ch.erni.iof.configurator.model.SingleAquariumConfiguration.FishMapping;
+import ch.erni.iof.configurator.model.SingleAquariumConfiguration.Office;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -29,21 +30,23 @@ public class AcquariumsConfigurationsRepositoryTest {
 
   @Test
   public void loadConfigurationTest() throws JsonGenerationException, JsonMappingException, IOException {
-    SingleAcquariumConfiguration config1 = new SingleAcquariumConfiguration();
-    config1.addFishMapping(new FishMapping("1", "berne"));
-    config1.addFishMapping(new FishMapping("2", "zuerich"));
+    SingleAquariumConfiguration config1 = new SingleAquariumConfiguration();
+    config1.addFishMapping(new FishMapping("1", new Office("1", "Berne", "CH")));
+    config1.addFishMapping(new FishMapping("2", new Office("2", "Zuerich", "CH")));
     config1.setAcquariumId("1234");
+    config1.setOffice(new Office("1", "Berne", "CH"));
 
-    SingleAcquariumConfiguration config2 = new SingleAcquariumConfiguration();
-    config2.addFishMapping(new FishMapping("1", "berne"));
-    config2.addFishMapping(new FishMapping("2", "zuerich"));
+    SingleAquariumConfiguration config2 = new SingleAquariumConfiguration();
+    config2.addFishMapping(new FishMapping("1", new Office("1", "Berne", "CH")));
+    config2.addFishMapping(new FishMapping("2", new Office("2", "Zuerich", "CH")));
     config2.setAcquariumId("4321");
+    config2.setOffice(new Office("2", "Zuerich", "CH"));
 
-    List<SingleAcquariumConfiguration> configurations = new ArrayList<>();
+    List<SingleAquariumConfiguration> configurations = new ArrayList<>();
     configurations.add(config1);
     configurations.add(config2);
 
-    AcquariumConfigurations acqConfigs = new AcquariumConfigurations();
+    AquariumConfigurations acqConfigs = new AquariumConfigurations();
     acqConfigs.setConfigurations(configurations);
     ObjectMapper mapper = new ObjectMapper();
     mapper.writeValue(new File("test.json"), acqConfigs.getConfigurations());
