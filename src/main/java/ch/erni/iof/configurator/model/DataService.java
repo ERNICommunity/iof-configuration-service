@@ -32,12 +32,11 @@ public class DataService {
       return singleConfig;
     }
 
-    for (SingleAquariumConfiguration single : configurations.get().getConfigurations()) {
-      if (single.getAcquariumId().equals(acquariumId)) {
-        return single;
-      }
+    Optional<SingleAquariumConfiguration> configOptional = findConfiguration(configurations, acquariumId);
+    if (!configOptional.isPresent()) {
+      return singleConfig;
     }
-    return singleConfig;
+    return configOptional.get();
   }
 
   public boolean updateSingleConfiguration(final SingleAquariumConfiguration configuration) {
