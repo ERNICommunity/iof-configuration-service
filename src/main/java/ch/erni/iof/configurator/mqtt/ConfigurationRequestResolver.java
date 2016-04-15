@@ -9,7 +9,6 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
-import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Service;
 
 import ch.erni.iof.configurator.model.DataService;
 import ch.erni.iof.configurator.model.SingleAquariumConfiguration;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 @Qualifier("resolver")
@@ -29,6 +26,9 @@ public class ConfigurationRequestResolver implements MqttCallback {
 
   @Autowired
   private MqttClient mqttClient;
+
+  @Autowired
+  private ConfigurationPublisher configPublisher;
 
   @Autowired
   private DataService dataService;
@@ -51,20 +51,15 @@ public class ConfigurationRequestResolver implements MqttCallback {
 
   @Override
   public void connectionLost(Throwable cause) {
-    // TODO Auto-generated method stub
+    // Auto-generated method stub
   }
 
   @Override
   public void messageArrived(String topic, MqttMessage message) throws Exception {
     String deviceId = message.toString();
     Optional<SingleAquariumConfiguration> config = dataService.getAcquariumConfiguration(deviceId);
-    if (config.isPresent() && checkForValidConfig(config.get())) {
-      ObjectMapper mapper = new ObjectMapper();
-      final String configJson = mapper.writeValueAsString(config.get());
-      final MqttTopic configTopic = mqttClient
-          .getTopic(environment.getProperty("topic.configuration") + "/" + deviceId);
-
-      configTopic.publish(new MqttMessage(configJson.getBytes()));
+    if (config.isPresent()) {
+      configPublisher.publishConfig(config.get());
     }
     else if (!config.isPresent()) {
       SingleAquariumConfiguration singleConfig = new SingleAquariumConfiguration();
@@ -75,15 +70,7 @@ public class ConfigurationRequestResolver implements MqttCallback {
 
   @Override
   public void deliveryComplete(IMqttDeliveryToken token) {
-    // TODO Auto-generated method stub
+    // Auto-generated method stub
 
-  }
-
-  private boolean checkForValidConfig(SingleAquariumConfiguration config) {
-    String officeId = config.getOffice().getOfficeId();
-    if (officeId.isEmpty() || "".equals(officeId)) {
-      return false;
-    }
-    return true;
   }
 }
