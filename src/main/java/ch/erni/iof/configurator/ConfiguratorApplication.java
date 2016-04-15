@@ -13,6 +13,7 @@ public class ConfiguratorApplication {
   private static AcquariumsConfigurationsRepository repo;
 
   public static void main(String[] args) {
+
     SpringApplication.run(ConfiguratorApplication.class, args);
   }
 }

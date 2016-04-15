@@ -30,8 +30,6 @@ public class ConfiguratorAppConfig {
 
   @Bean
   public MqttClient mqttClient() throws MqttException, FileNotFoundException, IOException {
-    // this.brokerUrl = appProperties().get("broker_url") + ":" +
-    // appProperties().getProperty("broker_port");
     this.brokerUrl = environment.getRequiredProperty("broker_url") + ":"
         + environment.getRequiredProperty("broker_port");
     this.clientId = environment.getRequiredProperty("device_id");

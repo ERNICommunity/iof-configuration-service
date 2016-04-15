@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ch.erni.iof.configurator.events.UpdateEventsPublisher;
 import ch.erni.iof.configurator.persistence.AcquariumsConfigurationsRepository;
 
 @Component
@@ -12,6 +13,9 @@ public class DataService {
 
   @Autowired
   private AcquariumsConfigurationsRepository repository;
+
+  @Autowired
+  private UpdateEventsPublisher<SingleAquariumConfiguration> updateEventsPublisher;
 
   public Optional<AquariumConfigurations> getAllConfigurations() {
     Optional<AquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
@@ -24,19 +28,12 @@ public class DataService {
     repository.saveAcquariumConfigurations(configurations);
   }
 
-  public SingleAquariumConfiguration getAcquariumConfiguration(String acquariumId) {
-    SingleAquariumConfiguration singleConfig = new SingleAquariumConfiguration();
-    singleConfig.setAcquariumId(acquariumId);
+  public Optional<SingleAquariumConfiguration> getAcquariumConfiguration(String acquariumId) {
     Optional<AquariumConfigurations> configurations = repository.loadAcquariumConfigurations();
     if (!configurations.isPresent()) {
-      return singleConfig;
+      return Optional.empty();
     }
-
-    Optional<SingleAquariumConfiguration> configOptional = findConfiguration(configurations, acquariumId);
-    if (!configOptional.isPresent()) {
-      return singleConfig;
-    }
-    return configOptional.get();
+    return findConfiguration(configurations, acquariumId);
   }
 
   public boolean updateSingleConfiguration(final SingleAquariumConfiguration configuration) {
@@ -50,6 +47,8 @@ public class DataService {
     configOptional.get().setFishMappings(configuration.getFishMappings());
     configOptional.get().setOffice(configuration.getOffice());
     repository.saveAcquariumConfigurations(configurations);
+
+    updateEventsPublisher.notifyAllObservers(configuration);
     return true;
   }
 

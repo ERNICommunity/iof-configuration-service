@@ -50,7 +50,7 @@ public class SingleAquariumConfiguration {
     private String country = "";
 
     public Office() {
-      // needed for deserialization
+      // needed by the Jackson library for deserialization
     }
 
     public Office(final String officeId, final String city, final String country) {

@@ -27,6 +27,7 @@ public class RestConfigurationController {
   private DataService service;
 
   /**
+   * Implements a REST interface to manage the configurations.
    * 
    * @param aquariumId
    *          the aquarium id
@@ -34,7 +35,15 @@ public class RestConfigurationController {
    */
   @RequestMapping("/configurations/{aquarium_id}")
   public SingleAquariumConfiguration getSingleConfiguration(@PathVariable("aquarium_id") String aquariumId) {
-    return service.getAcquariumConfiguration(aquariumId);
+    Optional<SingleAquariumConfiguration> config = service.getAcquariumConfiguration(aquariumId);
+    if (config.isPresent()) {
+      return config.get();
+    }
+    else {
+      SingleAquariumConfiguration singleConfig = new SingleAquariumConfiguration();
+      singleConfig.setAcquariumId(aquariumId);
+      return singleConfig;
+    }
   }
 
   @RequestMapping(value = "/configurations/{aquarium_id}", method = RequestMethod.POST)
