@@ -1,5 +1,8 @@
 package ch.erni.iof.configurator.persistence;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,8 +20,11 @@ import ch.erni.iof.configurator.model.SingleAquariumConfiguration.Office;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 public class AcquariumsConfigurationsRepositoryTest {
+
+  private static final String CONFIGURATION_FILE = "src/test/resources/test_configuration.json";
 
   @Before
   public void setUp() throws Exception {
@@ -29,7 +35,7 @@ public class AcquariumsConfigurationsRepositoryTest {
   }
 
   @Test
-  public void loadConfigurationTest() throws JsonGenerationException, JsonMappingException, IOException {
+  public void writeConfigurationTest() throws JsonGenerationException, JsonMappingException, IOException {
     SingleAquariumConfiguration config1 = new SingleAquariumConfiguration();
     config1.addFishMapping(new FishMapping("1", new Office("1", "Berne", "CH")));
     config1.addFishMapping(new FishMapping("2", new Office("2", "Zuerich", "CH")));
@@ -50,5 +56,16 @@ public class AcquariumsConfigurationsRepositoryTest {
     acqConfigs.setConfigurations(configurations);
     ObjectMapper mapper = new ObjectMapper();
     mapper.writeValue(new File("test.json"), acqConfigs.getConfigurations());
+  }
+
+  @Test
+  public void loadConfigurationTest() throws JsonGenerationException, JsonMappingException, IOException {
+
+    ObjectMapper mapper = new ObjectMapper();
+
+    List<SingleAquariumConfiguration> aquariumList = mapper.readValue(new File(CONFIGURATION_FILE), TypeFactory
+        .defaultInstance().constructCollectionType(List.class, SingleAquariumConfiguration.class));
+    assertEquals(1, aquariumList.size());
+    assertTrue(aquariumList.get(0).getAcquariumId().isEmpty());
   }
 }
