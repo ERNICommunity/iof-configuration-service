@@ -1,0 +1,34 @@
+sudo docker build -f Dockerfile .
+
+Sending build context to Docker daemon 15.55 MB
+Step 1 : FROM frolvlad/alpine-oraclejdk8:slim
+ ---> 3273714c9663
+Step 2 : VOLUME /tmp
+ ---> Using cache
+ ---> cda4bd3644a4
+Step 3 : ADD configurator.jar app.jar
+ ---> 48f9357a0d47
+Removing intermediate container c9f609adaa1c
+Step 4 : ADD iof_configuration.json iof_configuration.json
+ ---> 6e4d94aa5ec0
+Removing intermediate container 2d79f4987089
+Step 5 : RUN sh -c 'touch /app.jar'
+ ---> Running in cd10b751fccf
+ ---> fd96bdaed43e
+Removing intermediate container cd10b751fccf
+Step 6 : ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /app.jar
+ ---> Running in b8bf5c902f23
+ ---> b951037a415f
+Removing intermediate container b8bf5c902f23
+Successfully built b951037a415f
+
+
+sudo docker run -d -p 80:8080 <image-id (b951037a415f)>
+
+sudo docker ps
+
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES
+4fcd055f5f8e        b951037a415f        "java -Djava.security"   6 seconds ago       Up 5 seconds        0.0.0.0:80->8080/tcp   compassionate_albattani
+
+sudo docker logs -f <container-id (4fcd055f5f8e)>
+

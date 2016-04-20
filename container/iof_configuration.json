@@ -1,0 +1,80 @@
+[
+  {
+    "aquarium-id": "5C:CF:7F:07:5E:6A",
+    "fish-mapping": [
+      {
+        "fish-id": "1",
+        "office": {
+          "office-id": "1",
+          "city": "berne",
+          "country": "ch"
+        }
+      },
+      {
+        "fish-id": "2",
+        "office": {
+          "office-id": "2",
+          "city": "zurich",
+          "country": "ch"
+        }
+      }
+    ],
+    "office": {
+      "office-id": "1",
+      "city": "berne",
+      "country": "ch"
+    }
+  },
+  {
+    "aquarium-id": "18:FE:34:DB:4F:C5",
+    "fish-mapping": [
+      {
+        "fish-id": "1",
+        "office": {
+          "office-id": "1",
+          "city": "berne",
+          "country": "ch"
+        }
+      },
+      {
+        "fish-id": "2",
+        "office": {
+          "office-id": "1",
+          "city": "zurich",
+          "country": "ch"
+        }
+      }
+    ],
+    "office": {
+      "office-id": "2",
+      "city": "zurich",
+      "country": "ch"
+    }
+  },
+  {
+    "aquarium-id": "18:FE:34:DB:50:EF",
+    "fish-mapping": [
+      {
+        "fish-id": "1",
+        "office": {
+          "office-id": "1",
+          "city": "berne",
+          "country": "ch"
+        }
+      },
+      {
+        "fish-id": "2",
+        "office": {
+          "office-id": "2",
+          "city": "zurich",
+          "country": "ch"
+        }
+      }
+    ],
+    "office": {
+      "office-id": "3",
+      "city": "baar",
+      "country": "ch"
+    }
+  }
+]
