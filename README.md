@@ -1,4 +1,7 @@
 # iof-configuration-service
+
+:warning: **REPOSITORY NOT ACTIVE SINCE 2016 Dependabot alerts in git security settings disabled**
+
 Internet of Fish Configuration Service
 
 ## starting the application
